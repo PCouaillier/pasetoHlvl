@@ -1,14 +1,14 @@
 import { IProtocol, PrivateKey, PublicKey, SymmetricKey, V1, V2 } from 'paseto.js';
-import IPasetoVersionNameMap from './IPasetoVersionNameMap';
-import PasetoLocal from './PasetoLocal';
-import PasetoPrivate from './pasetoPrivate';
-import PasetoPublic from './PasetoPublic';
-import PasetoVersion from './PasetoVersion';
+import { IPasetoVersionNameMap } from './IPasetoVersionNameMap';
+import { PasetoLocal } from './PasetoLocal';
+import { PasetoPrivate } from './pasetoPrivate';
+import { PasetoPublic } from './PasetoPublic';
+import { PasetoVersion } from './PasetoVersion';
 
 const sPasetoVersion = Symbol('pasetoVersion');
 const sRepr = Symbol('repr');
 
-export default class PasetoFactory<P extends IProtocol> {
+export class PasetoFactory<P extends IProtocol> {
 
     public static createInstance<V extends keyof IPasetoVersionNameMap>(version?: V):
             PasetoFactory<IPasetoVersionNameMap[V]> {

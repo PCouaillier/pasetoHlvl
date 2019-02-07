@@ -1,6 +1,6 @@
 import * as assert from 'assert';
-import PasetoFactory from '../src/PasetoFactory';
-import PasetoVersion from '../src/PasetoVersion';
+import { PasetoFactory } from '../src/PasetoFactory';
+import { PasetoVersion } from '../src/PasetoVersion';
 
 const DEFAULT_VERSION = PasetoVersion.v2;
 

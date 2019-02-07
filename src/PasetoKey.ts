@@ -2,7 +2,7 @@ import { IProtocol } from 'paseto.js';
 
 const sRepr = Symbol('repr');
 
-export default abstract class PasetoKey<P extends IProtocol> {
+export abstract class PasetoKey<P extends IProtocol> {
     protected readonly pasetoVersion: P;
     protected readonly [sRepr]: string;
 

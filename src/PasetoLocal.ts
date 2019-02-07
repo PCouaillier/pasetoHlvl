@@ -1,9 +1,9 @@
 import { IProtocol, SymmetricKey} from 'paseto.js';
-import PasetoKey from './PasetoKey';
+import { PasetoKey } from './PasetoKey';
 
 const sSymmetricKey = Symbol('symmetricKey');
 
-export default class PasetoLocal<P extends IProtocol> extends PasetoKey<P> {
+export class PasetoLocal<P extends IProtocol> extends PasetoKey<P> {
     private readonly [sSymmetricKey]?: SymmetricKey<P>;
 
     public constructor(version: P, key: SymmetricKey<P>) {

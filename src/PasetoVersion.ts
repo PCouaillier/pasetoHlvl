@@ -3,4 +3,4 @@ const enum PasetoVersion {
     v2 = 'v2',
 }
 
-export default PasetoVersion;
+export { PasetoVersion };

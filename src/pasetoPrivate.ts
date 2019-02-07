@@ -1,12 +1,12 @@
 import { IProtocol, PrivateKey, PublicKey } from 'paseto.js';
-import PasetoKey from './PasetoKey';
-import PasetoPublic from './PasetoPublic';
+import { PasetoKey } from './PasetoKey';
+import { PasetoPublic } from './PasetoPublic';
 
 const sPrivateKey = Symbol('privateKey');
 const sPublicKey = Symbol('publicKey');
 const sHasPublicKey = Symbol('hasPublicKey');
 
-export default class PasetoPrivate<P extends IProtocol> extends PasetoKey<P> {
+export class PasetoPrivate<P extends IProtocol> extends PasetoKey<P> {
     private readonly [sPrivateKey]: PrivateKey<P>;
     private readonly [sPublicKey]?: PasetoPublic<P>;
     private readonly [sHasPublicKey]: boolean;

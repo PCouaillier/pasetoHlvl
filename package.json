@@ -2,16 +2,16 @@
   "name": "paseto_test",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "directories": {
-    "src": "lib"
-  },
+  "main": "PasetoHlvl.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "test": "mocha -r test/ts-node.js ./test/**.ts",
     "tslint": "tslint ./src/**.ts ./test/**.ts",
     "prepare": "tsc -b tsconfig.build.json"
   },
-  "author": "",
+  "author": "PCouaillier",
   "license": "ISC",
   "dependencies": {
     "paseto.js": "^0.1.3"
