@@ -1,10 +1,10 @@
 {
-  "name": "paseto_test",
-  "version": "1.0.0",
+  "name": "pasetohlvl",
+  "version": "0.1.0",
   "description": "",
-  "main": "PasetoHlvl.js",
+  "main": "dist/lib/PasetoHlvl.js",
   "files": [
-    "lib"
+    "dist"
   ],
   "scripts": {
     "test": "mocha -r test/ts-node.js ./test/**.ts",
