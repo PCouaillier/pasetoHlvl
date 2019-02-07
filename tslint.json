@@ -8,8 +8,7 @@
         "quotemark": ["single", true],
         "no-console": {
             "severity": "warn"
-        },
-        "no-reference": false
+        }
     },
     "rulesDirectory": []
 }

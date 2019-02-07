@@ -1,4 +1,3 @@
-/// <reference path='../lib/paseto.d.ts' />
 import * as assert from 'assert';
 import PasetoFactory from '../src/PasetoFactory';
 import PasetoVersion from '../src/PasetoVersion';
