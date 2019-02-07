@@ -1,10 +1,11 @@
+/// <reference path='../lib/paseto.d.ts' />
 import * as assert from 'assert';
-import {V2} from 'paseto.js';
-import Paseto, {Usage} from '../src/paseto';
+import { PasetoFactory } from '../src/PasetoFactory';
+import { PasetoVersion } from '../src/PasetoVersion';
 
 describe('paseto', () => {
     it('signs', async () => {
-        const paseto = await Paseto.createInstance({usage: Usage.public});
+        const paseto = await (PasetoFactory.createInstance(PasetoVersion.v2)).getPrivateKey();
         const crypted = await paseto.sign('Hello world');
         assert.strictEqual(
             await paseto.verify(crypted),
@@ -13,7 +14,7 @@ describe('paseto', () => {
     });
 
     it('encrypt', async () => {
-        const paseto = await Paseto.createInstance({usage: Usage.local});
+        const paseto = await (PasetoFactory.createInstance(PasetoVersion.v2)).getLocalKey();
         const crypted = await paseto.encrypt('Hello world');
         const localKey = paseto.localKey();
         assert.ok(localKey !== undefined);
@@ -29,7 +30,7 @@ describe('paseto', () => {
     it('encrypt with defined key', async () => {
         const arbitraryLocalKey = 'DL_1XkMvU6Qw8OXgA430Fm4BdkCmyjnlG-NsZvM5VCc';
         const arbitraryKey = Buffer.from(arbitraryLocalKey, 'base64');
-        const paseto = await Paseto.createInstance<V2>({usage: Usage.local, localKey: arbitraryKey});
+        const paseto = await (PasetoFactory.createInstance(PasetoVersion.v2)).getLocalKey(arbitraryKey);
         const crypted = await paseto.encrypt('Hello world');
         const localKey = paseto.localKey();
         assert.ok(localKey !== undefined);
