@@ -1,21 +1,13 @@
-import { IProtocol, PrivateKey, PublicKey, SymmetricKey} from 'paseto.js';
+import { IProtocol, SymmetricKey} from 'paseto.js';
+import PasetoKey from './PasetoKey';
 
-interface IPasetoConstructorOptions<P extends IProtocol> {
-    privateKey?: PrivateKey<P>;
-    publicKey?: PublicKey<P>;
-    symmetricKey?: SymmetricKey<P>;
-    version: P;
-}
-
-const sPasetoVersion = Symbol('pasetoVersion');
 const sSymmetricKey = Symbol('symmetricKey');
 
-export default class PasetoLocal<P extends IProtocol> {
-    private readonly [sPasetoVersion]: P;
+export default class PasetoLocal<P extends IProtocol> extends PasetoKey<P> {
     private readonly [sSymmetricKey]?: SymmetricKey<P>;
 
     public constructor(version: P, key: SymmetricKey<P>) {
-        this[sPasetoVersion] = version;
+        super(version);
         this[sSymmetricKey] = key;
     }
 
@@ -24,7 +16,7 @@ export default class PasetoLocal<P extends IProtocol> {
         if (!sk) {
             throw new Error('No local key');
         }
-        return this[sPasetoVersion].encrypt(message, sk);
+        return this.pasetoVersion.encrypt(message, sk);
     }
 
     public async decrypt(message: string) {
@@ -32,7 +24,7 @@ export default class PasetoLocal<P extends IProtocol> {
         if (!sk) {
             throw new Error('No local key');
         }
-        return this[sPasetoVersion].decrypt(message, sk);
+        return this.pasetoVersion.decrypt(message, sk);
     }
 
     public localKey(): SymmetricKey<P>|undefined {

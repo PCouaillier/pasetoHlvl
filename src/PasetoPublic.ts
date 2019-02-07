@@ -1,15 +1,13 @@
 import { IProtocol, PublicKey } from 'paseto.js';
+import PasetoKey from './PasetoKey';
 
-const sPasetoVersion = Symbol('pasetoInstance');
 const sPublicKey = Symbol('publicKey');
 
-export default class PasetoPublic<P extends IProtocol> {
-
-    private readonly [sPasetoVersion]: P;
+export default class PasetoPublic<P extends IProtocol> extends PasetoKey<P> {
     private readonly [sPublicKey]: PublicKey<P>;
 
     public constructor(pasetoVersion: P, publicKey: PublicKey<P>) {
-        this[sPasetoVersion] = pasetoVersion;
+        super(pasetoVersion);
         this[sPublicKey] = publicKey;
     }
 
@@ -18,6 +16,6 @@ export default class PasetoPublic<P extends IProtocol> {
     }
 
     public async verify(message: string): Promise<string> {
-        return this[sPasetoVersion].verify(message, this[sPublicKey]);
+        return this.pasetoVersion.verify(message, this[sPublicKey]);
     }
 }

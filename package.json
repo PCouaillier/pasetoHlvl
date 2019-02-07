@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "directories": {
-    "lib": "lib",
-    "test": "test"
+    "src": "lib"
   },
   "scripts": {
     "test": "mocha -r ts-node/register ./test/**.ts",

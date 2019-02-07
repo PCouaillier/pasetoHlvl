@@ -1,26 +1,21 @@
 import { IProtocol, PrivateKey, PublicKey, SymmetricKey, V1, V2 } from 'paseto.js';
+import IPasetoVersionNameMap from './IPasetoVersionNameMap';
 import PasetoLocal from './PasetoLocal';
 import PasetoPrivate from './pasetoPrivate';
 import PasetoPublic from './PasetoPublic';
-import { PasetoVersion } from './PasetoVersion';
+import PasetoVersion from './PasetoVersion';
 
 const sPasetoVersion = Symbol('pasetoVersion');
+const sRepr = Symbol('repr');
 
-export class PasetoFactory<P extends IProtocol> {
+export default class PasetoFactory<P extends IProtocol> {
 
-    public static createInstance(version?: PasetoVersion.v1): PasetoFactory<V1>;
-    public static createInstance(version?: PasetoVersion.v2): PasetoFactory<V2>;
-
-    /** @ignore */
-    public static createInstance<P extends IProtocol>(version?: PasetoVersion): PasetoFactory<P> {
-        return new PasetoFactory(PasetoFactory.getVersion(version as any)) as PasetoFactory<P>;
+    public static createInstance<V extends keyof IPasetoVersionNameMap>(version?: V):
+            PasetoFactory<IPasetoVersionNameMap[V]> {
+        return new PasetoFactory(PasetoFactory.getVersion(version));
     }
 
-    public static getVersion(version: PasetoVersion.v1): V1;
-    public static getVersion(version: PasetoVersion.v2): V2;
-
-    /** @ignore */
-    public static getVersion<V extends PasetoVersion>(version?: V): IProtocol {
+    public static getVersion<V extends keyof IPasetoVersionNameMap>(version?: V): IPasetoVersionNameMap[V] {
         switch (version) {
             case PasetoVersion.v1:
                 return new V1();
@@ -33,9 +28,15 @@ export class PasetoFactory<P extends IProtocol> {
     }
 
     private readonly [sPasetoVersion]: P;
+    private readonly [sRepr]: string;
 
     public constructor(version: P) {
+        this[sRepr] = version.repr();
         this[sPasetoVersion] = version;
+    }
+
+    public getRepr(): string {
+        return this[sRepr];
     }
 
     public async getPrivateKey(keys?: {privateKey: Buffer, publicKey?: Buffer}): Promise<PasetoPrivate<P>> {
