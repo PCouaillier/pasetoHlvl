@@ -7,8 +7,9 @@
     "src": "lib"
   },
   "scripts": {
-    "test": "mocha -r ts-node/register ./test/**.ts",
-    "tslint": "tslint ./src/**.ts ./test/**.ts"
+    "test": "mocha -r test/ts-node.js ./test/**.ts",
+    "tslint": "tslint ./src/**.ts ./test/**.ts",
+    "prepare": "tsc -b tsconfig.build.json"
   },
   "author": "",
   "license": "ISC",

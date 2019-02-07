@@ -9,6 +9,7 @@ describe('paseto', () => {
     it ('has a fallback version', async () => {
         const paseto = await (PasetoFactory.createInstance()).getPrivateKey();
         const crypted = await paseto.sign('Hello world');
+        assert.ok(paseto.hasPublicKey());
         assert.strictEqual(paseto.getRepr(), DEFAULT_VERSION);
         assert.strictEqual(
             await paseto.verify(crypted),
@@ -18,6 +19,7 @@ describe('paseto', () => {
 
     it('signs', async () => {
         const paseto = await (PasetoFactory.createInstance(PasetoVersion.v2)).getPrivateKey();
+        assert.ok(paseto.hasPublicKey());
         assert.strictEqual(paseto.getRepr(), PasetoVersion.v2);
         const crypted = await paseto.sign('Hello world');
         assert.strictEqual(
@@ -26,12 +28,29 @@ describe('paseto', () => {
         );
     });
 
+    it('can not verify if only the private key is given', async () => {
+        const paseto = await
+            (PasetoFactory.createInstance(PasetoVersion.v2))
+                .getPrivateKey({
+                    privateKey:
+                        Buffer.from(
+                            'i78VYCzrukpKsO7akXIMSt95swQ2ITG4M7SYZA44KSEqPX9zfXkyj8fjpPYqiGqyjePzuPb8ZCrJ9Qbt---Yyg',
+                            'base64'),
+                });
+
+        assert.ok(!paseto.hasPublicKey());
+        assert.strictEqual(paseto.getRepr(), PasetoVersion.v2);
+        const crypted = await paseto.sign('Hello world');
+        assert.notStrictEqual(crypted, undefined);
+        assert.strictEqual(paseto.verify(crypted), undefined);
+    });
+
     it('encrypt', async () => {
         const paseto = await (PasetoFactory.createInstance(PasetoVersion.v2)).getLocalKey();
         assert.strictEqual(paseto.getRepr(), PasetoVersion.v2);
         const crypted = await paseto.encrypt('Hello world');
         const localKey = paseto.localKey();
-        assert.ok(localKey !== undefined);
+        assert.notStrictEqual(localKey, undefined);
         if (localKey) {
             assert.notStrictEqual(localKey.encode(), 'DL/1XkMvU6Qw8OXgA430Fm4BdkCmyjnlG+NsZvM5VCc=');
         }
@@ -46,7 +65,7 @@ describe('paseto', () => {
         assert.strictEqual(paseto.getRepr(), PasetoVersion.v1);
         const crypted = await paseto.encrypt('Hello world');
         const localKey = paseto.localKey();
-        assert.ok(localKey !== undefined);
+        assert.notStrictEqual(localKey, undefined);
         if (localKey) {
             assert.notStrictEqual(localKey.encode(), 'AU3Ip3lR3xR0pqAd8NM524oWrpOAzdnlMs578LGq2B0');
         }

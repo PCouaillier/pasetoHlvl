@@ -15,7 +15,13 @@ export default class PasetoPublic<P extends IProtocol> extends PasetoKey<P> {
         return this[sPublicKey];
     }
 
-    public async verify(message: string): Promise<string> {
-        return this.pasetoVersion.verify(message, this[sPublicKey]);
+    /**
+     * verify and decode an asymmetric authentication
+     *
+     * @param token
+     * @returns the decoded token
+     */
+    public async verify(token: string): Promise<string> {
+        return this.pasetoVersion.verify(token, this[sPublicKey]);
     }
 }
