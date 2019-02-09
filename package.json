@@ -1,17 +1,18 @@
 {
-  "name": "paseto_test",
-  "version": "1.0.0",
+  "name": "pasetohlvl",
+  "version": "0.1.1",
   "description": "",
-  "main": "index.js",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  },
+  "main": "dist/lib/PasetoHlvl.js",
+  "types": "dist/types/PasetoHlvl.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "mocha -r ts-node/register ./test/**.ts",
-    "tslint": "tslint ./src/**.ts ./test/**.ts"
+    "test": "mocha -r test/ts-node.js ./test/**.ts",
+    "tslint": "tslint ./src/**.ts ./test/**.ts",
+    "prepare": "tsc -b tsconfig.build.json"
   },
-  "author": "",
+  "author": "PCouaillier",
   "license": "ISC",
   "dependencies": {
     "paseto.js": "^0.1.3"
