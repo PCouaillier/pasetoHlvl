@@ -5,3 +5,4 @@ export { PasetoLocal } from './PasetoLocal';
 export { PasetoPublic } from './PasetoPublic';
 export { PasetoVersion } from './PasetoVersion';
 export { PasetoPrivate } from './pasetoPrivate';
+export { MessageFactory } from './MessageFactory';
