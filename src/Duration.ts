@@ -1,4 +1,9 @@
 export class Duration {
+
+    public static shortDuration(minutes: number, hours: number = 0, days: number = 0): Duration {
+        return new Duration(0, 0, days, hours, minutes);
+    }
+
     public constructor(
         private years: number = 0,
         private month: number = 0,

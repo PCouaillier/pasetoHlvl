@@ -31,7 +31,7 @@ export interface  IMessageParameters {
 
 const ParamtersMaping =  Object.freeze({
     audience: 'aud',
-    expiration: 'aud',
+    expiration: 'exp',
     issuedAt: 'iat',
     issuer: 'iss',
     notBefore: 'nbf',

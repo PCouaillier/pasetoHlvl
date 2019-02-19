@@ -1,6 +1,7 @@
 import * as assert from 'assert';
 import { Duration } from '../src/Duration';
 import { MessageFactory } from '../src/MessageFactory';
+import { MessageValidator } from '../src/MessageValidator';
 
 describe('MessageFactory', () => {
     it ('Can create message', async () => {
@@ -18,6 +19,18 @@ describe('MessageFactory', () => {
         d.setFullYear(d.getFullYear() + 3);
         d.setMilliseconds((message.exp as Date).getMilliseconds());
         assert.equal((message.exp as Date).getTime(), d.getTime());
-        assert.deepEqual(Object.keys(message), ['hello', 'exp']);
+        assert.deepEqual(Object.keys(message).sort(), ['exp', 'hello']);
+        assert.ok(new MessageValidator(message).isValid());
+    });
+
+    it ('Can set a token expiration date to the factory', async () => {
+        const d = new Date();
+        d.setFullYear(d.getFullYear() + 3);
+        const messageFactory = new MessageFactory({ expiration: d });
+        const message = messageFactory.createMessage({ hello: 'world' });
+        assert.strictEqual(message.hello, 'world');
+        assert.equal((message.exp as Date).getTime(), d.getTime());
+        assert.deepEqual(Object.keys(message).sort(), ['exp', 'hello']);
+        assert.ok(new MessageValidator(message).isValid());
     });
 });
