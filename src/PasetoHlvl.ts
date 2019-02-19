@@ -12,5 +12,5 @@ export {
     IMessageFactoryOptionsWithDuration,
     IMessageFactoryOptionsWithExpiration,
     IMessageParameters,
-    IStdMessageFactoryOptions
+    IStdMessageFactoryOptions,
 } from './MessageFactory';

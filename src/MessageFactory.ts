@@ -1,53 +1,60 @@
 import { Duration } from './Duration';
 
 export interface  IStdMessageFactoryOptions {
-    issuer?: string,
-    subject?: string,
-    audience?: string,
-    notBefore?: Date,
-    issuedAt?: Date,
-    tokenIdentifier?: Date,
+    issuer?: string;
+    subject?: string;
+    audience?: string;
+    notBefore?: Date;
+    issuedAt?: Date;
+    tokenIdentifier?: Date;
 }
 
 export interface IMessageFactoryOptionsWithExpiration extends IStdMessageFactoryOptions {
-    expiration?: Date,
+    expiration?: Date;
 }
 
 export interface IMessageFactoryOptionsWithDuration extends IStdMessageFactoryOptions {
-    duration: Duration,
+    duration: Duration;
 }
 
 export type IMessageFactoryOptions = IMessageFactoryOptionsWithDuration|IMessageFactoryOptionsWithExpiration;
 
 export interface  IMessageParameters {
-    iss?: IMessageFactoryOptions['issuer'],
-    sub?: IMessageFactoryOptions['subject'],
-    aud?: IMessageFactoryOptions['audience'],
-    exp?: IMessageFactoryOptionsWithExpiration['expiration'],
-    nbf?: IMessageFactoryOptions['notBefore'],
-    iat?: IMessageFactoryOptions['issuedAt'],
-    jti?: IMessageFactoryOptions['tokenIdentifier'],
+    aud?: IMessageFactoryOptions['audience'];
+    exp?: IMessageFactoryOptionsWithExpiration['expiration'];
+    iat?: IMessageFactoryOptions['issuedAt'];
+    iss?: IMessageFactoryOptions['issuer'];
+    jti?: IMessageFactoryOptions['tokenIdentifier'];
+    nbf?: IMessageFactoryOptions['notBefore'];
+    sub?: IMessageFactoryOptions['subject'];
 }
 
 const ParamtersMaping =  Object.freeze({
-    issuer: 'iss',
-    subject: 'sub',
     audience: 'aud',
     expiration: 'aud',
-    notBefore: 'nbf',
     issuedAt: 'iat',
+    issuer: 'iss',
+    notBefore: 'nbf',
+    subject: 'sub',
     tokenIdentifier: 'jti',
 });
 
-const invalidInputMessageTokens: ReadonlyArray<string> = Object.freeze(
-    Object.keys(ParamtersMaping).map(k => (ParamtersMaping as any)[k] as string)
-);
-
 export class MessageFactory {
-    private readonly options?: IMessageParameters
+
+    private static toMessageOptions(options?: IMessageFactoryOptions): IMessageParameters {
+        if (!options) { return {}; }
+        return Object.keys(options).reduce((acc: any, key: string) => {
+            if (key !== 'duration') {
+                acc[(ParamtersMaping as any)[key]] = (options as any)[key];
+            }
+            return acc as IMessageParameters;
+        },
+        {} as IMessageParameters);
+    }
+    private readonly options?: IMessageParameters;
     private readonly calculateExpiration?: () => Readonly<Date>;
 
-    constructor(options?: IMessageFactoryOptions) {
+    public constructor(options?: IMessageFactoryOptions) {
         if (options) {
             if ((options as IMessageFactoryOptionsWithDuration).duration) {
                 const duration = (options as IMessageFactoryOptionsWithDuration).duration;
@@ -79,17 +86,5 @@ export class MessageFactory {
             }
         }
         return message;
-    }
-
-    private static toMessageOptions(options?: IMessageFactoryOptions): IMessageParameters
-    {
-        if (!options) return {};
-        return Object.keys(options).reduce((acc: any, key: string) => {
-            if (key !== 'duration') {
-                acc[(ParamtersMaping as any)[key]] = (options as any)[key];
-            }
-            return acc as IMessageParameters;
-        },
-        {} as IMessageParameters);
     }
 }

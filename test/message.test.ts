@@ -2,17 +2,17 @@ import * as assert from 'assert';
 import { Duration } from '../src/Duration';
 import { MessageFactory } from '../src/MessageFactory';
 
-describe('message', () => {
+describe('MessageFactory', () => {
     it ('Can create message', async () => {
         const messageFactory = new MessageFactory();
-        const message = messageFactory.createMessage({hello: 'world'});
+        const message = messageFactory.createMessage({ hello: 'world' });
         assert.strictEqual(message.hello, 'world');
         assert.deepStrictEqual(Object.keys(message), ['hello']);
     });
 
-    it ('Can set a token dureation to the factory', async () => {
+    it ('Can set a token duration to the factory', async () => {
         const messageFactory = new MessageFactory({ duration: new Duration(3) });
-        const message = messageFactory.createMessage({hello: 'world'});
+        const message = messageFactory.createMessage({ hello: 'world' });
         assert.strictEqual(message.hello, 'world');
         const d = new Date();
         d.setFullYear(d.getFullYear() + 3);
