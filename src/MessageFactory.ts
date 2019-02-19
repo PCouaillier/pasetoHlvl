@@ -1,23 +1,4 @@
-export class Duration {
-    constructor(
-        private years: number = 0,
-        private month: number = 0,
-        private days: number = 0,
-        private hours: number = 0,
-        private minutes: number = 0) {
-    }
-
-    getExpiration() {
-        const now = new Date();
-        return new Date(
-            now.getFullYear() + this.years,
-            now.getMonth() + this.month,
-            now.getDate() + this.days,
-            now.getHours() + this.hours,
-            now.getMinutes() + this.minutes,
-        );
-    }
-}
+import { Duration } from './Duration';
 
 export interface  IStdMessageFactoryOptions {
     issuer?: string,
@@ -64,7 +45,7 @@ const invalidInputMessageTokens: ReadonlyArray<string> = Object.freeze(
 
 export class MessageFactory {
     private readonly options?: IMessageParameters
-    private readonly calculateExpiration?: () => Date;
+    private readonly calculateExpiration?: () => Readonly<Date>;
 
     constructor(options?: IMessageFactoryOptions) {
         if (options) {
@@ -78,14 +59,17 @@ export class MessageFactory {
 
     public createMessage<K extends object>(inputMessage: K): K&IMessageParameters {
         const message: any = {};
-        for (const keys in inputMessage) {
-            if (!invalidInputMessageTokens.includes(keys)) {
-                message[keys] = (this.options as any)[keys];
+        const options = this.options;
+        if (options) {
+            for (const key in options) {
+                if (options.hasOwnProperty(key)) {
+                    message[key] = (options as any)[key];
+                }
             }
         }
-        if (this.options) {
-            for (const keys in this.options) {
-                message[keys] = (this.options as any)[keys];
+        for (const key in inputMessage) {
+            if (inputMessage.hasOwnProperty(key)) {
+                message[key] = (inputMessage as any)[key];
             }
         }
         if (this.calculateExpiration) {
@@ -94,14 +78,16 @@ export class MessageFactory {
                 message.exp = exp;
             }
         }
-        return message as K&IMessageParameters;
+        return message;
     }
 
-    private static toMessageOptions(options?: IMessageFactoryOptions): undefined|IMessageParameters
+    private static toMessageOptions(options?: IMessageFactoryOptions): IMessageParameters
     {
-        if (!options) return options;
+        if (!options) return {};
         return Object.keys(options).reduce((acc: any, key: string) => {
-            acc[(ParamtersMaping as any)[key]] = (options as any)[key];
+            if (key !== 'duration') {
+                acc[(ParamtersMaping as any)[key]] = (options as any)[key];
+            }
             return acc as IMessageParameters;
         },
         {} as IMessageParameters);
