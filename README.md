@@ -91,5 +91,19 @@ To validate et message you can use the MessageValidator class
 const message = await pasetoLocal.decrypt(token);
 const messageValidator = new MessageValidator(message);
 assert.ok(!messageValidator.isExpired());
-assert.ok(messageValidator.isValid());
+// checks dates for (Expiration, Not Before, Issued At)
+assert.ok(!messageValidator.isValid({now: new Date(0)}));
+assert.ok(messageValidator.isValid({
+    audience: 'pie-hosted.com';
+    tokenIdentifier: '87IFSGFgPNtQNNuw0AtuLttPYFfYwOkjhqdWcLoYQHvL';
+    issuer: 'paragonie.com';
+    subject: 'documentation'
+}));
+// to force the check even if an element is not present in the message (does not apply to expire)
+assert.ok(!messageValidator.isValidStrict({
+    audience: 'pie-hosted.com';
+    tokenIdentifier: '87IFSGFgPNtQNNuw0AtuLttPYFfYwOkjhqdWcLoYQHvL';
+    issuer: 'paragonie.com';
+    subject: 'documentation'
+}));
 ```

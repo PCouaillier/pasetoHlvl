@@ -1,11 +1,12 @@
 {
   "name": "pasetohlvl",
-  "version": "0.1.3",
-  "description": "a high level paseto lib for nodejs (browser support will come with v1)",
+  "version": "0.2.0",
+  "description": "A high level paseto lib for nodejs",
   "main": "dist/lib/PasetoHlvl.js",
   "types": "dist/types/PasetoHlvl.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "lib_types"
   ],
   "scripts": {
     "test": "mocha -r test/ts-node.js ./test/**.ts",

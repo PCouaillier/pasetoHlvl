@@ -6,7 +6,7 @@ export interface  IStdMessageFactoryOptions {
     audience?: string;
     notBefore?: Date;
     issuedAt?: Date;
-    tokenIdentifier?: Date;
+    tokenIdentifier?: string;
 }
 
 export interface IMessageFactoryOptionsWithExpiration extends IStdMessageFactoryOptions {
