@@ -1,4 +1,4 @@
-import { IProtocol, SymmetricKey} from 'paseto.js';
+import { IProtocol, SymmetricKey } from 'paseto.js';
 import { PasetoKey } from './PasetoKey';
 
 const sSymmetricKey = Symbol('symmetricKey');

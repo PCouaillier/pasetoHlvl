@@ -2,13 +2,15 @@
 
 ## Used libs 
 
-Based on [paseto.js](https://www.npmjs.com/package/paseto.js) (which you probably should use instead of this one).
+Based on [paseto.js](https://www.npmjs.com/package/paseto.js) but provide a higher level of abstraction.
 
 Thx to sloonz for his original `.d.ts` file ([his repository](https://github.com/sloonz/paseto.js)).
 
+(If you are using typescipt and have a problem with types you can download the `.d.ts` file from his repository.)
+
 ## How to
 
-### How to JWT like
+### Use this lib as a JWT like
 
 #### Instantiate with a symmetric key (local)
 
@@ -45,4 +47,63 @@ assert.strictEqual(
     message,
     'hello world'
 );
+```
+
+### Write a complex message
+
+```typescript
+import * as assert from 'assert';
+import { Duration } from '../src/Duration';
+import { MessageFactory } from '../src/MessageFactory';
+import { PasetoFactory, PasetoVersion } from 'PasetoHlvl';
+
+const durationOfFiveMinutes = Duration.shortDuration(5);
+const durationOfTwoYearOneMounth = new Duration(2, 1);
+const longLivingMessageFactory = new MessageFactory({ duration: durationOfTwoYearOneMounth });
+const shortLivingMessageFactory = new MessageFactory({ duration: durationOfFiveMinutes });
+const localKey = Buffer.from('DL/1XkMvU6Qw8OXgA430Fm4BdkCmyjnlG+NsZvM5VCc=', 'base64');
+
+const pasetoFactory = PasetoFactory.createInstance(PasetoVersion.v2);
+const pasetoLocal = await pasetoFactory.getLocalKey(localKey);
+const longTimeCryptedMessage = await pasetoLocal.encrypt(longLivingMessageFactory.createMessage(hello: world));
+const shortTimeCryptedMessage = await pasetoLocal.encrypt(shortLivingMessageFactory.createMessage(hello: world));
+let message = await pasetoLocal.decrypt(longTimeCryptedMessage);
+
+assert.strictEqual(
+    message.hello,
+    'world'
+);
+
+message = await pasetoLocal.decrypt(shortTimeCryptedMessage);
+
+assert.strictEqual(
+    message.hello,
+    'world'
+);
+
+```
+
+### Message Validation
+
+To validate et message you can use the MessageValidator class
+
+```typescript
+const message = await pasetoLocal.decrypt(token);
+const messageValidator = new MessageValidator(message);
+assert.ok(!messageValidator.isExpired());
+// checks dates for (Expiration, Not Before, Issued At)
+assert.ok(!messageValidator.isValid({now: new Date(0)}));
+assert.ok(messageValidator.isValid({
+    audience: 'pie-hosted.com';
+    tokenIdentifier: '87IFSGFgPNtQNNuw0AtuLttPYFfYwOkjhqdWcLoYQHvL';
+    issuer: 'paragonie.com';
+    subject: 'documentation'
+}));
+// to force the check even if an element is not present in the message (does not apply to expire)
+assert.ok(!messageValidator.isValidStrict({
+    audience: 'pie-hosted.com';
+    tokenIdentifier: '87IFSGFgPNtQNNuw0AtuLttPYFfYwOkjhqdWcLoYQHvL';
+    issuer: 'paragonie.com';
+    subject: 'documentation'
+}));
 ```

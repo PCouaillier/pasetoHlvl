@@ -30,9 +30,9 @@ export class PasetoFactory<P extends IProtocol> {
     private readonly [sPasetoVersion]: P;
     private readonly [sRepr]: string;
 
-    public constructor(version: P) {
-        this[sRepr] = version.repr();
+    private constructor(version: P) {
         this[sPasetoVersion] = version;
+        this[sRepr] = version.repr();
     }
 
     public getRepr(): string {
