@@ -1,6 +1,6 @@
 {
   "name": "pasetohlvl",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A high level paseto lib for nodejs",
   "main": "dist/lib/PasetoHlvl.js",
   "types": "dist/types/PasetoHlvl.d.ts",
