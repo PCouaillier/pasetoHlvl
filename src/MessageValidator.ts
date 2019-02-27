@@ -8,7 +8,28 @@ export interface IValidationOptions {
     now?: Date;
 }
 
-export class MessageValidator {
+export interface IMessageValidator {
+
+    isForAudience(audience: string): boolean;
+
+    isIdentifiedBy(tokenIdentifier: string): boolean;
+
+    isIssuedBy(issuer: string): boolean;
+
+    isSubject(subject: string): boolean;
+
+    isExpired(date?: Date): boolean;
+
+    isIssuedAtValid(date?: Date): boolean;
+
+    isNotBeforeValid(date?: Date): boolean;
+
+    isValid(options?: IValidationOptions): boolean;
+
+    isValidStrict(options?: IValidationOptions): boolean;
+}
+
+export class MessageValidator implements IMessageValidator {
     private readonly message: IMessageParameters;
 
     public constructor(message: object) {

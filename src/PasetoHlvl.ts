@@ -1,6 +1,12 @@
 export { Duration } from './Duration';
 export { IPasetoVersionNameMap } from './IPasetoVersionNameMap';
-export { MessageValidator } from './MessageValidator';
+export {
+    MessageValidator,
+    IMessageValidator,
+    IValidationOptions,
+} from './MessageValidator';
+export { ValidatorFactory } from './ValidatorFactory';
+export { ValidatorFactoryWrapper } from './ValidatorFactoryWrapper';
 export { PasetoFactory } from './PasetoFactory';
 export { PasetoKey } from './PasetoKey';
 export { PasetoLocal } from './PasetoLocal';
