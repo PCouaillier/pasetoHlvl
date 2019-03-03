@@ -21,3 +21,4 @@ export {
     IMessageParameters,
     IStdMessageFactoryOptions,
 } from './MessageFactory';
+export { addInstanceFactory, getInstance } from './PasetoInitiator';
