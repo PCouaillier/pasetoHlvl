@@ -10,6 +10,31 @@ Thx to sloonz for his original `.d.ts` file ([his repository](https://github.com
 
 ## How to
 
+### Use the global scope initiator
+
+The global scope initiator is used to simplify the creation and the use of keys.
+
+```typescript
+import { addInstanceFactory, getInstance } from 'pasetohlvl';
+
+const KnownLocalKey = Buffer.from('DL/1XkMvU6Qw8OXgA430Fm4BdkCmyjnlG+NsZvM5VCc=', 'base64');
+const knownPrivateKey = Buffer.from('2lR/xbDCIT1CHec7zz96//iyxQ4xv+MYBtrOVV11k6gPo8OLG1+o+07E+ZwIBI72wA4DD7A+7GwebzCL0fwWkw==', 'base64');
+
+addInstanceFactory('local', async (factory) => ({
+    local: await factory.getLocalKey(),
+    private: await factory.getPrivateKey(knownPrivateKey),
+}));
+
+addInstanceFactory('private', async (factory) => ({
+    private: await factory.getPrivateKey(),
+}));
+
+async function useInstances () {
+    const { local } = await getInstance('local');
+    const { private, public} = await getInstance('private');
+}
+```
+
 ### Use this lib as a JWT like
 
 #### Instantiate with a symmetric key (local)
