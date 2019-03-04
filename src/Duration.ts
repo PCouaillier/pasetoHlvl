@@ -5,11 +5,11 @@ export class Duration {
     }
 
     public constructor(
-        private years: number = 0,
-        private month: number = 0,
-        private days: number = 0,
-        private hours: number = 0,
-        private minutes: number = 0) {
+        private readonly years: number = 0,
+        private readonly month: number = 0,
+        private readonly days: number = 0,
+        private readonly hours: number = 0,
+        private readonly minutes: number = 0) {
     }
 
     public getExpiration(): Readonly<Date> {
