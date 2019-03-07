@@ -6,6 +6,7 @@ export interface  IStdMessageFactoryOptions {
     audience?: string;
     notBefore?: Date;
     issuedAt?: Date;
+    keyId?: string;
     tokenIdentifier?: string;
 }
 
@@ -25,6 +26,7 @@ export interface  IMessageParameters {
     iat?: IMessageFactoryOptions['issuedAt'];
     iss?: IMessageFactoryOptions['issuer'];
     jti?: IMessageFactoryOptions['tokenIdentifier'];
+    kid?: IMessageFactoryOptions['keyId'];
     nbf?: IMessageFactoryOptions['notBefore'];
     sub?: IMessageFactoryOptions['subject'];
 }

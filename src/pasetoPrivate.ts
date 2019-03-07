@@ -1,12 +1,12 @@
 import { IProtocol, PrivateKey, PublicKey } from 'paseto.js';
-import { PasetoKey } from './PasetoKey';
+import { PasetoEncryptionKey } from "./PasetoEncryptionKey";
 import { PasetoPublic } from './PasetoPublic';
 
 const sPrivateKey = Symbol('privateKey');
 const sPublicKey = Symbol('publicKey');
 const sHasPublicKey = Symbol('hasPublicKey');
 
-export class PasetoPrivate<P extends IProtocol> extends PasetoKey<P> {
+export class PasetoPrivate<P extends IProtocol> extends PasetoEncryptionKey<P> {
     private readonly [sPrivateKey]: PrivateKey<P>;
     private readonly [sPublicKey]?: PasetoPublic<P>;
     private readonly [sHasPublicKey]: boolean;
@@ -24,8 +24,22 @@ export class PasetoPrivate<P extends IProtocol> extends PasetoKey<P> {
      * @param message the prefered way is by using a buffer
      * @returns the encoded message
      */
-    public async sign(message: Buffer|string): Promise<string> {
-        return this.pasetoVersion.sign(message, this[sPrivateKey]);
+    public async sign(message: Buffer|string, footer?: string|Buffer): Promise<string> {
+        return this.pasetoVersion.sign(message, this[sPrivateKey], footer);
+    }
+
+    /**
+     * Same as sign {@see PasetoPrivate.sign}
+     *
+     * @param message
+     * @param footer
+     */
+    public async encrypt(message: Buffer|string, footer?: string|Buffer): Promise<string> {
+        const {
+            message: normalisedMessage,
+            footer: normalisedFooter,
+        } = this.messageAndFooterNormalization(message, footer);
+        return this.sign(normalisedMessage, normalisedFooter);
     }
 
     public privateKey(): PrivateKey<P> {
@@ -51,8 +65,18 @@ export class PasetoPrivate<P extends IProtocol> extends PasetoKey<P> {
      * @param token
      * @returns the decoded token or undefined
      */
-    public verify(token: string): undefined|Promise<string> {
+    public verify(token: string, footer?: Buffer|string): undefined|Promise<string> {
         const pub = this[sPublicKey];
-        return pub ? pub.verify(token) : undefined;
+        return pub ? pub.verify(token, footer) : undefined;
+    }
+
+    /**
+     * Same as verify but always return a Promise
+     *
+     * @param token
+     * @param footer
+     */
+    public async decrypt(token: string, footer?: Buffer|string): Promise<string> {
+        return this.verify(token, footer) || Promise.reject(new Error('NO_PUBLIC_KEY'));
     }
 }

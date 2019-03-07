@@ -1,17 +1,17 @@
 import { expect } from 'chai';
-import { addInstanceFactory, getInstance } from '../src/PasetoInitiator';
 import { PasetoLocal, PasetoPrivate, PasetoPublic } from '../src/PasetoHlvl';
+import { addInstanceFactory, getInstance } from '../src/PasetoInitiator';
 
 describe('PasetoInitiator', () => {
     addInstanceFactory('local', async (factory) => ({
         local: await factory.getLocalKey(),
         private: await factory.getPrivateKey(),
     }));
-    
+
     addInstanceFactory('private', async (factory) => ({
         private: await factory.getPrivateKey(),
     }));
-    
+
     it('can handle multiple init calls', async () => {
         let i = 0;
         const cb = <P>(a: P) => { i += 1; return a; };
