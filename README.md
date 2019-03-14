@@ -152,5 +152,4 @@ validatorFactory.isValidStrict(message, {
     subject: 'documentation'
 });
 */
-
 ```
