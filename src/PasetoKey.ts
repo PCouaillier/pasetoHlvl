@@ -6,7 +6,7 @@ export abstract class PasetoKey<P extends IProtocol> {
     protected readonly pasetoVersion: P;
     protected readonly [sRepr]: string;
 
-    public constructor(version: P) {
+    protected constructor(version: P) {
         this.pasetoVersion = version;
         this[sRepr] = version.repr();
     }

@@ -4,7 +4,7 @@ export interface IValidationOptions {
     audience?: string;
     tokenIdentifier?: string;
     issuer?: string;
-    subject?: string;
+    subject?: string|RegExp;
     now?: Date;
 }
 
@@ -36,10 +36,10 @@ export class MessageValidator implements IMessageValidator {
         if (!message) {
             throw new Error('message is not valid');
         }
-        if (message instanceof String) {
+        if ((message as any) instanceof String) {
             throw new Error('message is a string instead of object');
         }
-        if (message instanceof Number) {
+        if ((message as any) instanceof Number) {
             throw new Error('message is a number instead of object');
         }
         if (message instanceof Array) {
@@ -60,8 +60,10 @@ export class MessageValidator implements IMessageValidator {
         return this.message.iss === issuer;
     }
 
-    public isSubject(subject: string): boolean {
-        return this.message.sub === subject;
+    public isSubject(subject: string|RegExp): boolean {
+        return (subject instanceof RegExp)
+            ? subject.test(this.message.sub || '')
+            : this.message.sub === subject;
     }
 
     public isExpired(date?: Date): boolean {
@@ -75,7 +77,7 @@ export class MessageValidator implements IMessageValidator {
     public isIssuedAtValid(date?: Date): boolean {
         const message = this.message;
         if (!message.iat) {
-            return false;
+            return true;
         }
         return (message.iat instanceof Date ? message.iat : new Date(message.iat)) <= (date ? date : new Date());
     }
@@ -83,7 +85,7 @@ export class MessageValidator implements IMessageValidator {
     public isNotBeforeValid(date?: Date): boolean {
         const message = this.message;
         if (!message.nbf) {
-            return false;
+            return true;
         }
         return (message.nbf instanceof Date ? message.nbf : new Date(message.nbf)) <= (date ? date : new Date());
     }
@@ -115,8 +117,8 @@ export class MessageValidator implements IMessageValidator {
             options = {};
         }
         return !this.isExpired(options.now) &&
-                (this.isIssuedAtValid(options.now)) &&
-                (this.isNotBeforeValid(options.now)) &&
+                this.isIssuedAtValid(options.now) &&
+                this.isNotBeforeValid(options.now) &&
                 (options.audience === undefined || this.isForAudience(options.audience)) &&
                 (options.tokenIdentifier === undefined || this.isIdentifiedBy(options.tokenIdentifier)) &&
                 (options.issuer === undefined || this.isIssuedBy(options.issuer)) &&

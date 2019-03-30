@@ -14,13 +14,13 @@ export class PasetoLocal<P extends IProtocol> extends PasetoEncryptionKey<P> {
     public async encrypt(message: string|Buffer|object, footer?: Buffer|string|object): Promise<string> {
         const sk = this[sSymmetricKey];
 
-        const {message: normalisedMessage, footer: normalisedfooter} =
-                this.messageAndFooterNormalization(message, footer);
+        const {message: normalisedMessage, footer: normalisedFooter} =
+                PasetoEncryptionKey.messageAndFooterNormalization(message, footer);
 
         return this.pasetoVersion.encrypt(
             normalisedMessage,
             sk,
-            normalisedfooter,
+            normalisedFooter,
         );
     }
 

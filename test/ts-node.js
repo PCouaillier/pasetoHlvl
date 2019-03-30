@@ -1,4 +1,4 @@
 require("ts-node").register({
+    files: true,
     project: "./tsconfig.json",
-    files: ["../lib_types/paseto.d.ts"]
 });

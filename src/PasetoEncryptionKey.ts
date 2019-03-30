@@ -1,13 +1,11 @@
 import { IProtocol } from 'paseto.js';
 import { PasetoKey } from './PasetoKey';
+
+type MessageType = Buffer|string|object;
+
 export abstract class PasetoEncryptionKey<P extends IProtocol> extends PasetoKey<P> {
 
-    public abstract async encrypt(message: string | Buffer | object,
-                                  footer?: Buffer | string | object): Promise<string>;
-    public abstract async decrypt(message: string | Buffer | object,
-                                  footer?: Buffer | string | object): Promise<string>;
-
-    protected messageAndFooterNormalization(message: string | Buffer | object, footer?: Buffer | string | object): {
+    protected static messageAndFooterNormalization(message: MessageType, footer?: MessageType): {
         message: string;
         footer?: string;
     } {
@@ -23,4 +21,7 @@ export abstract class PasetoEncryptionKey<P extends IProtocol> extends PasetoKey
             message: message.toString(),
         };
     }
+
+    public abstract async encrypt(message: MessageType, footer?: MessageType): Promise<string>;
+    public abstract async decrypt(message: MessageType, footer?: MessageType): Promise<string>;
 }
