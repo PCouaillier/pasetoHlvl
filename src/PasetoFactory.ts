@@ -61,7 +61,7 @@ export class PasetoFactory<P extends IProtocol> {
     }
 
     public async getPublicKey(publicKey: Buffer): Promise<PasetoPublic<P>> {
-        const gPublicKey = new SymmetricKey(this[sPasetoVersion]);
+        const gPublicKey = new PublicKey(this[sPasetoVersion]);
         await gPublicKey.inject(publicKey);
         return new PasetoPublic(this[sPasetoVersion], gPublicKey);
     }
