@@ -13,7 +13,7 @@ type FactoryFunc = (factory: PasetoFactory<IProtocol>) => Promise<IKeys>;
 const eventListener = new EventEmitter();
 const factory: Map<string|symbol, {factoryFunc: FactoryFunc, version: PasetoVersion}> = new Map();
 const instances: Map<string|symbol, IKeys> = new Map();
-const instantiationQueu: Set<string|symbol> = new Set();
+const instantiationQueue: Set<string|symbol> = new Set();
 
 const factories = {
     v1: PasetoFactory.createInstance('v1'),
@@ -36,8 +36,8 @@ export const getInstance = (name: string|symbol): Promise<IKeys> => {
     if (!factoryInfos) {
         throw new Error('Unknown instance : ' + name.toString());
     }
-    if (!instantiationQueu.has(name)) {
-        instantiationQueu.add(name);
+    if (!instantiationQueue.has(name)) {
+        instantiationQueue.add(name);
         return factoryInfos.factoryFunc(factories[factoryInfos.version])
         .then((paseto) => {
             if (paseto.private && paseto.private.hasPublicKey() && !paseto.public) {

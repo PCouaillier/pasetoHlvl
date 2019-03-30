@@ -18,7 +18,8 @@ export class PasetoPublic<P extends IProtocol> extends PasetoKey<P> {
     /**
      * verify and decode an asymmetric authentication
      *
-     * @param token
+     * @param {string} token
+     * @param {?Buffer|string} footer
      * @returns the decoded token
      */
     public async verify(token: string, footer?: Buffer|string): Promise<string> {

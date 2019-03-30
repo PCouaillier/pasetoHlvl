@@ -31,7 +31,7 @@ export interface  IMessageParameters {
     sub?: IMessageFactoryOptions['subject'];
 }
 
-const ParamtersMaping =  Object.freeze({
+const parameterMapping =  Object.freeze({
     audience: 'aud',
     expiration: 'exp',
     issuedAt: 'iat',
@@ -46,8 +46,8 @@ export class MessageFactory {
     private static toMessageOptions(options?: IMessageFactoryOptions): IMessageParameters {
         if (!options) { return {}; }
         return Object.keys(options).reduce((acc: any, key: string) => {
-            if (key !== 'duration') {
-                acc[(ParamtersMaping as any)[key]] = (options as any)[key];
+            if (options.hasOwnProperty(key) && key !== 'duration') {
+                acc[(parameterMapping as any)[key]] = (options as any)[key];
             }
             return acc as IMessageParameters;
         },

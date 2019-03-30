@@ -79,7 +79,7 @@ assert.strictEqual(
 ```typescript
 import * as assert from 'assert';
 import {
-    Duration
+    Duration,
     MessageFactory,
     PasetoFactory,
     PasetoVersion
@@ -93,8 +93,8 @@ const localKey = Buffer.from('DL/1XkMvU6Qw8OXgA430Fm4BdkCmyjnlG+NsZvM5VCc=', 'ba
 
 const pasetoFactory = PasetoFactory.createInstance(PasetoVersion.v2);
 const pasetoLocal = await pasetoFactory.getLocalKey(localKey);
-const longTimeCryptedMessage = await pasetoLocal.encrypt(longLivingMessageFactory.createMessage(hello: world));
-const shortTimeCryptedMessage = await pasetoLocal.encrypt(shortLivingMessageFactory.createMessage(hello: world));
+const longTimeCryptedMessage = await pasetoLocal.encrypt(longLivingMessageFactory.createMessage({hello: 'world'}));
+const shortTimeCryptedMessage = await pasetoLocal.encrypt(shortLivingMessageFactory.createMessage({hello: 'world'}));
 let message = await pasetoLocal.decrypt(longTimeCryptedMessage);
 
 assert.strictEqual(
@@ -129,17 +129,17 @@ assert.ok(!messageValidator.isExpired());
 // checks dates for (Expiration, Not Before, Issued At)
 assert.ok(!messageValidator.isValid({now: new Date(0)}));
 assert.ok(messageValidator.isValid({
-    audience: 'pie-hosted.com';
-    tokenIdentifier: '87IFSGFgPNtQNNuw0AtuLttPYFfYwOkjhqdWcLoYQHvL';
-    issuer: 'paragonie.com';
-    subject: 'documentation'
+    audience: 'pie-hosted.com',
+    tokenIdentifier: '87IFSGFgPNtQNNuw0AtuLttPYFfYwOkjhqdWcLoYQHvL',
+    issuer: 'paragonie.com',
+    subject: 'documentation',
 }));
 // To force the check even if an element is not present in the message (does not apply to expire)
 assert.ok(!messageValidator.isValidStrict({
-    audience: 'pie-hosted.com';
-    tokenIdentifier: '87IFSGFgPNtQNNuw0AtuLttPYFfYwOkjhqdWcLoYQHvL';
-    issuer: 'paragonie.com';
-    subject: 'documentation'
+    audience: 'pie-hosted.com',
+    tokenIdentifier: '87IFSGFgPNtQNNuw0AtuLttPYFfYwOkjhqdWcLoYQHvL',
+    issuer: 'paragonie.com',
+    subject: 'documentation',
 }));
 
 /*

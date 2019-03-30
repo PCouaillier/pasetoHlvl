@@ -18,8 +18,9 @@ describe('MessageFactory', () => {
         const d = new Date();
         d.setFullYear(d.getFullYear() + 3);
         d.setMilliseconds((message.exp as Date).getMilliseconds());
-        assert.equal((message.exp as Date).getTime(), d.getTime());
-        assert.deepEqual(Object.keys(message).sort(), ['exp', 'hello']);
+        assert.strictEqual((message.exp as Date).getTime(), d.getTime());
+        assert.deepStrictEqual(Object.keys(message).sort(), ['exp', 'hello']);
+        assert.deepStrictEqual(Object.keys(message).sort(), ['exp', 'hello']);
         assert.ok(new MessageValidator(message).isValid());
     });
 
@@ -29,8 +30,8 @@ describe('MessageFactory', () => {
         const messageFactory = new MessageFactory({ expiration: d });
         const message = messageFactory.createMessage({ hello: 'world' });
         assert.strictEqual(message.hello, 'world');
-        assert.equal((message.exp as Date).getTime(), d.getTime());
-        assert.deepEqual(Object.keys(message).sort(), ['exp', 'hello']);
+        assert.strictEqual((message.exp as Date).getTime(), d.getTime());
+        assert.deepStrictEqual(Object.keys(message).sort(), ['exp', 'hello']);
         assert.ok(new MessageValidator(message).isValid());
     });
 });

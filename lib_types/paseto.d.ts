@@ -50,7 +50,7 @@ declare module 'paseto.js' {
             public encode(): string;
             public raw(): Buffer;
 
-            public public(): Promise<PublicKey<P>>
+            public public(): Promise<PublicKey<P>>;
         }
 
         /**

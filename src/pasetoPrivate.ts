@@ -21,8 +21,9 @@ export class PasetoPrivate<P extends IProtocol> extends PasetoEncryptionKey<P> {
     /**
      * Encode a message using an asymmetric authentication
      *
-     * @param message the prefered way is by using a buffer
-     * @returns the encoded message
+     * @param {Buffer|string} message the preferred way is by using a buffer
+     * @param {?Buffer|string} footer
+     * @returns {Promise} the encoded message
      */
     public async sign(message: Buffer|string, footer?: string|Buffer): Promise<string> {
         return this.pasetoVersion.sign(message, this[sPrivateKey], footer);
@@ -38,7 +39,7 @@ export class PasetoPrivate<P extends IProtocol> extends PasetoEncryptionKey<P> {
         const {
             message: normalisedMessage,
             footer: normalisedFooter,
-        } = this.messageAndFooterNormalization(message, footer);
+        } = PasetoEncryptionKey.messageAndFooterNormalization(message, footer);
         return this.sign(normalisedMessage, normalisedFooter);
     }
 
@@ -62,8 +63,9 @@ export class PasetoPrivate<P extends IProtocol> extends PasetoEncryptionKey<P> {
      * verify and decode an asymmetric authentication token
      *
      * @see {@link hasPublicKey}
-     * @param token
-     * @returns the decoded token or undefined
+     * @param {string} token
+     * @param {?Buffer|string} footer
+     * @returns {?Promise} the decoded token or undefined
      */
     public verify(token: string, footer?: Buffer|string): undefined|Promise<string> {
         const pub = this[sPublicKey];
@@ -73,8 +75,9 @@ export class PasetoPrivate<P extends IProtocol> extends PasetoEncryptionKey<P> {
     /**
      * Same as verify but always return a Promise
      *
-     * @param token
-     * @param footer
+     * @param {string} token
+     * @param {?Buffer|string} footer
+     * @returns {Promise} the decoded token or undefined
      */
     public async decrypt(token: string, footer?: Buffer|string): Promise<string> {
         return this.verify(token, footer) || Promise.reject(new Error('NO_PUBLIC_KEY'));

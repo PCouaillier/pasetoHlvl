@@ -7,9 +7,12 @@ const DEFAULT_VERSION = PasetoVersion.v2;
 describe('paseto', () => {
 
     it ('has a fallback version', async () => {
-        const paseto = await (PasetoFactory.createInstance()).getPrivateKey();
+        const factoryInstance = PasetoFactory.createInstance();
+        assert.strictEqual(factoryInstance.getRepr(), DEFAULT_VERSION);
+        const paseto = await (factoryInstance).getPrivateKey();
         const crypted = await paseto.sign('Hello world');
         assert.ok(paseto.hasPublicKey());
+        assert.notStrictEqual(paseto.publicKey(), undefined);
         assert.strictEqual(paseto.getRepr(), DEFAULT_VERSION);
         assert.strictEqual(
             await paseto.verify(crypted),
