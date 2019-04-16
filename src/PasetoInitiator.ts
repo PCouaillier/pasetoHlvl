@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import { IProtocol } from 'paseto.js';
+import { lazy } from './Lazy';
 import { PasetoFactory } from './PasetoFactory';
 import { PasetoLocal } from './PasetoLocal';
 import { PasetoPrivate } from './pasetoPrivate';
@@ -16,8 +17,8 @@ const instances: Map<string|symbol, IKeys> = new Map();
 const instantiationQueue: Set<string|symbol> = new Set();
 
 const factories = {
-    v1: PasetoFactory.createInstance('v1'),
-    v2: PasetoFactory.createInstance('v2'),
+    v1: lazy(() => PasetoFactory.createInstance('v1')),
+    v2: lazy(() => PasetoFactory.createInstance('v2')),
 };
 
 export const addInstanceFactory = (name: string|symbol, factoryFunc: FactoryFunc, version?: PasetoVersion): void => {
@@ -38,7 +39,7 @@ export const getInstance = (name: string|symbol): Promise<IKeys> => {
     }
     if (!instantiationQueue.has(name)) {
         instantiationQueue.add(name);
-        return factoryInfos.factoryFunc(factories[factoryInfos.version])
+        return factoryInfos.factoryFunc(factories[factoryInfos.version]())
         .then((paseto) => {
             if (paseto.private && paseto.private.hasPublicKey() && !paseto.public) {
                 paseto.public = new PasetoPublic(
