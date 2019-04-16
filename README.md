@@ -4,9 +4,7 @@
 
 Based on [paseto.js](https://www.npmjs.com/package/paseto.js) but provide a higher level of abstraction.
 
-Thx to sloonz for his original `.d.ts` file ([his repository](https://github.com/sloonz/paseto.js)).
-
-(If you are using typescipt and have a problem with types you can download the `.d.ts` file from his repository.)
+If you need typedef for _paseto.js_ can download it [here](https://raw.githubusercontent.com/PCouaillier/pasetoHlvl/master/lib_types/paseto.d.ts)) (Big up to sloonz for his original `.d.ts`).
 
 ## How to
 
