@@ -1,6 +1,6 @@
 {
   "name": "pasetohlvl",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "A high level paseto lib for nodejs",
   "homepage": "https://github.com/PCouaillier/pasetoHlvl#readme",
   "bugs": {
@@ -41,7 +41,7 @@
     "@types/mocha": "^5.2.6",
     "@types/node": "^10.12.26",
     "chai": "^4.2.0",
-    "mocha": "^5.2.0",
+    "mocha": "^9.0.3",
     "ts-node": "^8.0.3",
     "tslint": "^5.13.0",
     "typescript": "^3.3.1"

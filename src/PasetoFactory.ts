@@ -12,16 +12,16 @@ export class PasetoFactory<P extends IProtocol> {
 
     public static createInstance<V extends keyof IPasetoVersionNameMap>(version?: V):
             PasetoFactory<IPasetoVersionNameMap[V]> {
-        return new PasetoFactory(PasetoFactory.getVersion(version));
+        return new PasetoFactory(PasetoFactory.getVersion(version)) as PasetoFactory<IPasetoVersionNameMap[V]>;
     }
 
     public static getVersion<V extends keyof IPasetoVersionNameMap>(version?: V): IPasetoVersionNameMap[V] {
         switch (version) {
             case PasetoVersion.v1:
-                return new V1();
+                return new V1() as IPasetoVersionNameMap[V];
             case undefined:
             case PasetoVersion.v2:
-                return new V2();
+                return new V2() as IPasetoVersionNameMap[V];
             default:
                 throw new Error('Argument Error version not implement');
         }

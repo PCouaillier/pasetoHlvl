@@ -17,8 +17,8 @@ const instances: Map<string|symbol, IKeys> = new Map();
 const instantiationQueue: Set<string|symbol> = new Set();
 
 const factories = {
-    v1: lazy(() => PasetoFactory.createInstance('v1')),
-    v2: lazy(() => PasetoFactory.createInstance('v2')),
+    v1: lazy(() => PasetoFactory.createInstance(PasetoVersion.v1)),
+    v2: lazy(() => PasetoFactory.createInstance(PasetoVersion.v2)),
 };
 
 export const addInstanceFactory = (name: string|symbol, factoryFunc: FactoryFunc, version?: PasetoVersion): void => {

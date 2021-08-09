@@ -1,6 +1,7 @@
-import { V1, V2 } from 'paseto.js';
+import type { V1, V2 } from 'paseto.js';
+import type { PasetoVersion } from './PasetoVersion';
 
 export interface IPasetoVersionNameMap {
-    v1: V1;
-    v2: V2;
+    [PasetoVersion.v1]: V1;
+    [PasetoVersion.v2]: V2;
 }
