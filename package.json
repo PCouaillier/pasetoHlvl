@@ -27,7 +27,7 @@
     "lib_types"
   ],
   "scripts": {
-    "test": "mocha -r test/ts-node.js ./test/**.ts",
+    "test": "mocha -r ts-node.js ./test/**.ts",
     "tslint": "tslint ./src/**.ts ./test/**.ts",
     "prepare": "tsc -b tsconfig.build.json"
   },
